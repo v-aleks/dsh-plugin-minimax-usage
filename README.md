@@ -16,7 +16,7 @@
 - **5-Hour Quota Bar** — real-time progress of your current interval remaining
 - **Weekly Quota Bar** — weekly allowance usage at a glance
 - **Reset Countdown** — shows exactly when each window resets (e.g. `重置于 2h 17m`)
-- **Smart Visibility** — only appears when the current model provider is MiniMax (auto-hides otherwise)
+- **Collapsible Panel** — click the arrow to collapse/expand; collapsed state shows a compact summary
 - **Auto Refresh** — updates every 60 seconds via server-side cache
 - **Sidebar Integration** — renders in `sidebar.footer.action`, right above the Settings button
 - **Lightweight** — pure React.createElement, no CSS frameworks, no external images
@@ -25,14 +25,17 @@
 
 ```
 ┌──────────────────────────────┐
-│  MINIMAX                     │
+│  ▼ MINIMAX                   │
 │  5 小时   42 / 100 (42%)     │
 │  ████████████░░░░░░░░░░░░░░  │
 │  重置于 2h 17m                │
-│                              │
 │  本周     78 / 100 (78%)     │
 │  ████████████████████████░░  │
 │  重置于 3d 12h               │
+└──────────────────────────────┘
+       ↕ click to toggle
+┌──────────────────────────────┐
+│  ▶ MINIMAX  5h: 42% · 周: 78%│
 └──────────────────────────────┘
 ```
 
@@ -100,27 +103,23 @@ The API key is loaded at request time from `~/.zshrc.secret` via `source`. If th
 ## 🏗️ Architecture
 
 ```
-┌──────────────────────────────────────┐
-│  Host (Node.js)                      │
-│  lib/index.js                        │
-│  ├─ /api/minimax/model-check         │
-│  │  └─ reads agentDefaultModel       │
-│  ├─ /api/minimax/quota               │
-│  │  ├─ reads MINIMAX_API_KEY         │
-│  │  ├─ calls MiniMax REST API        │
-│  │  └─ 60s server-side cache         │
-└──────────┬───────────────────────────┘
-           │ 1. fetch('/api/minimax/model-check')
-           │ 2. if isMiniMax → fetch('/api/minimax/quota')
+┌─────────────────────────────────┐
+│  Host (Node.js)                 │
+│  lib/index.js                   │
+│  ├─ registers /api/minimax/quota│
+│  ├─ reads MINIMAX_API_KEY       │
+│  ├─ calls MiniMax REST API      │
+│  └─ 60s server-side cache       │
+└──────────┬──────────────────────┘
+           │ fetch('/api/minimax/quota')
            ▼
-┌──────────────────────────────────────┐
-│  Client (Browser)                    │
-│  lib/client.js                       │
-│  ├─ Slot: sidebar.footer.action      │
-│  ├─ Smart visibility: MiniMax only   │
-│  ├─ QuotaCard React component        │
-│  └─ 60s auto-refresh + model polling │
-└──────────────────────────────────────┘
+┌─────────────────────────────────┐
+│  Client (Browser)               │
+│  lib/client.js                  │
+│  ├─ Slot: sidebar.footer.action │
+│  ├─ Collapsible QuotaCard       │
+│  └─ 60s auto-refresh            │
+└─────────────────────────────────┘
 ```
 
 ## 🤝 Contributing

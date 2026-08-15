@@ -1,0 +1,51 @@
+{
+  "name": "@dsh-external/minimax-usage",
+  "version": "0.1.0",
+  "private": false,
+  "description": "MiniMax Token Plan quota monitor — displays 5-hour and weekly remaining quota progress bars in the DeepSeek Harness sidebar.",
+  "license": "MIT",
+  "homepage": "https://github.com/ovensi/dsh-plugin-minimax-usage#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ovensi/dsh-plugin-minimax-usage.git"
+  },
+  "keywords": [
+    "deepseek-harness",
+    "dsh",
+    "dsh-plugin",
+    "dsh-client-plugin",
+    "minimax",
+    "minimax-api",
+    "quota",
+    "usage-monitor",
+    "progress-bar",
+    "sidebar",
+    "token-plan",
+    "coding-plan"
+  ],
+  "author": "ovensi",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [],
+      "platform": "web"
+    }
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -16,6 +16,7 @@
 - **Barra de cuota de 5 horas** — progreso en tiempo real de tu intervalo actual restante
 - **Barra de cuota semanal** — uso semanal del límite de un vistazo
 - **Cuenta regresiva de reinicio** — muestra exactamente cuándo se reinicia cada ventana (ej. `重置于 2h 17m`)
+- **Visibilidad inteligente** — solo aparece cuando el proveedor del modelo actual es MiniMax (se oculta automáticamente al cambiar)
 - **Actualización automática** — se actualiza cada 60 segundos mediante caché del lado del servidor
 - **Integración en la barra lateral** — se renderiza en `sidebar.footer.action`, justo encima del botón de Ajustes
 - **Implementación ligera** — React.createElement puro, sin frameworks CSS, sin imágenes externas

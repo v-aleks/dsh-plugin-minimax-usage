@@ -7,6 +7,8 @@
 [![npm compatible](https://img.shields.io/badge/npm-compatible-green?style=flat-square&logo=npm)](https://www.npmjs.com/)
 [![MIT License](https://img.shields.io/badge/license-MIT-yellow?style=flat-square)](./LICENSE)
 
+**English** · **[中文](./README.zh-CN.md)** · **[日本語](./README.ja.md)** · **[Español](./README.es.md)**
+
 ---
 
 ## ✨ Features

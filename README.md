@@ -75,14 +75,29 @@ Append this to `~/.dsh/profiles/web/cordis.patch.yml`:
 
 ### 2. Set your API key
 
-The plugin reads `MINIMAX_API_KEY` from `~/.zshrc.secret` (or your shell secrets file):
+The plugin reads `MINIMAX_API_KEY` from **one** of these locations, in order:
 
-```bash
-# In ~/.zshrc.secret or ~/.bashrc.secret
-export MINIMAX_API_KEY="your-minimax-api-key-here"
-```
+1. **Environment variable** (recommended):
+   ```bash
+   # In ~/.zshrc or ~/.bashrc
+   export MINIMAX_API_KEY="your-minimax-api-key-here"
+   ```
+   Then `source ~/.zshrc` (or restart your shell) and restart `dsh web`.
+   The `dsh web` process inherits the parent's environment, so this is the
+   simplest and safest option.
 
-Get your API key from [MiniMax Open Platform](https://www.minimaxi.com/).
+2. **Local config file** `~/.config/dsh/minimax.json` (use when env vars are
+   not available, e.g. CI / sandboxed shells):
+   ```bash
+   mkdir -p ~/.config/dsh
+   printf '%s' '{"apiKey":"your-minimax-api-key-here"}' > ~/.config/dsh/minimax.json
+   chmod 600 ~/.config/dsh/minimax.json
+   ```
+
+The plugin does **not** parse `~/.zshrc` / `~/.bashrc` / `*.secret` files —
+those are shell scripts and unsafe to read with a plain-text regex.
+
+Get your API key from the [MiniMax Open Platform](https://api.minimax.io/).
 
 ### 3. Restart & Refresh
 
@@ -94,11 +109,20 @@ dsh web
 
 ## ⚙️ Configuration
 
-| Environment Variable | Description | Default |
+| Source | Description | Default |
 |---|---|---|
-| `MINIMAX_API_KEY` | Your MiniMax API key | *(required)* |
+| `MINIMAX_API_KEY` env | Your MiniMax API key | *(required)* |
+| `~/.config/dsh/minimax.json` | Local config `{"apiKey":"..."}` (chmod 600) | *(optional)* |
 
-The API key is loaded at request time from `~/.zshrc.secret` via `source`. If the key is not set, the plugin will display an error message in the sidebar instead of crashing.
+The plugin reads the key at request time. If the key is not available, the plugin will display an error message in the sidebar instead of crashing.
+
+The MiniMax endpoint is:
+
+```
+GET https://api.minimax.io/v1/api/openplatform/coding_plan/remains
+Authorization: Bearer <MINIMAX_API_KEY>
+Content-Type: application/json
+```
 
 ## 🏗️ Architecture
 
